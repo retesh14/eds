@@ -431,11 +431,11 @@ describe('mobile drawer', () => {
     let net = 0;
     const { addEventListener, removeEventListener } = document;
     document.addEventListener = function patchedAdd(type, fn, opts) {
-      if (type === 'keydown') net += 1;
+      if (type === 'keydown') { net += 1; }
       return addEventListener.call(this, type, fn, opts);
     };
     document.removeEventListener = function patchedRemove(type, fn, opts) {
-      if (type === 'keydown') net -= 1;
+      if (type === 'keydown') { net -= 1; }
       return removeEventListener.call(this, type, fn, opts);
     };
 

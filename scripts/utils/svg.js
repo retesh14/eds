@@ -32,7 +32,7 @@ export const loadHrefSvg = (() => {
     })();
 
     const svg = await cache[href];
-    if (!svg) return null;
+    if (!svg) { return null; }
     const clone = svg.cloneNode(true);
     return clone;
   };

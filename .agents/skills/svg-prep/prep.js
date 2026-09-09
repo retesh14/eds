@@ -21,11 +21,11 @@ for (const file of paths.flatMap(svgsIn)) {
     const name = basename(file, '.svg');
     const { svg, findings } = normalise(before, { name, flatten, keep, palette });
     const errored = findings.some((f) => f.level === 'error');
-    if (!errored) writeFileSync(file, `${svg}\n`);
+    if (!errored) { writeFileSync(file, `${svg}\n`); }
     failed ||= errored;
     const size = errored ? 'not written' : `${before.length} → ${svg.length} bytes`;
     console.log(`\n${file}  ${size}`);
-    for (const f of findings) console.log(`  ${MARK[f.level]} ${f.code}: ${f.message}`);
+    for (const f of findings) { console.log(`  ${MARK[f.level]} ${f.code}: ${f.message}`); }
   } catch (ex) {
     failed = true;
     console.log(`\n${file}  not written\n  ${MARK.error} crashed: ${ex.message}`);

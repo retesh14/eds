@@ -4,11 +4,11 @@
  * @returns {Object|null} Object with r, g, b values (0-255) or null if invalid
  */
 function parseColor(section) {
-  if (!section) return null;
+  if (!section) { return null; }
 
   const computedBg = getComputedStyle(section).backgroundColor;
   const rgbMatch = computedBg.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-  if (!rgbMatch) return null;
+  if (!rgbMatch) { return null; }
   return {
     r: parseInt(rgbMatch[1], 10),
     g: parseInt(rgbMatch[2], 10),
@@ -39,14 +39,14 @@ function getRelativeLuminance({ r, g, b }) {
  */
 export function getColorScheme(section) {
   const rgb = parseColor(section);
-  if (!rgb) return null;
+  if (!rgb) { return null; }
 
   return getRelativeLuminance(rgb) > 0.5 ? 'light-scheme' : 'dark-scheme';
 }
 
 export function setColorScheme(section) {
   const scheme = getColorScheme(section);
-  if (!scheme) return;
+  if (!scheme) { return; }
   section.querySelectorAll(':scope > *').forEach((el) => {
     // Reset any pre-made color schemes
     el.classList.remove('light-scheme', 'dark-scheme');
@@ -62,7 +62,7 @@ async function handleBackground(background, section) {
   if (isMedia) {
     const mediaUrl = new URL(background, window.location.href);
     // No MP4 support
-    if (mediaUrl.pathname.endsWith('.mp4')) return;
+    if (mediaUrl.pathname.endsWith('.mp4')) { return; }
     const { createPicture } = await import('../../scripts/utils/picture.js');
     const pic = createPicture({ src: mediaUrl.href });
     section.classList.add('has-background');
@@ -82,8 +82,8 @@ async function handleBackground(background, section) {
 async function handleLayout(text, section, type) {
   delete section.dataset[type];
 
-  if (text === '0') return;
-  if (type === 'grid') section.classList.add('grid');
+  if (text === '0') { return; }
+  if (type === 'grid') { section.classList.add('grid'); }
   section.classList.add(`${type}-${text}`);
 }
 
@@ -96,10 +96,10 @@ export default async function init(section) {
     layout,
     background,
   } = section.dataset;
-  if (grid) handleLayout(grid, section, 'grid');
-  if (gap) handleLayout(gap, section, 'gap');
-  if (spacing) handleLayout(spacing, section, 'spacing');
-  if (container) handleLayout(container, section, 'container');
-  if (background) await handleBackground(background, section);
-  if (layout) handleLayout(layout, section, 'layout');
+  if (grid) { handleLayout(grid, section, 'grid'); }
+  if (gap) { handleLayout(gap, section, 'gap'); }
+  if (spacing) { handleLayout(spacing, section, 'spacing'); }
+  if (container) { handleLayout(container, section, 'container'); }
+  if (background) { await handleBackground(background, section); }
+  if (layout) { handleLayout(layout, section, 'layout'); }
 }

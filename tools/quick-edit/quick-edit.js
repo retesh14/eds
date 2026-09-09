@@ -20,7 +20,7 @@ async function loadMoudle(origin, payload) {
   const trusted = url.hostname === 'da.live'
     || url.hostname === 'localhost'
     || url.hostname.endsWith('--da-nx--adobe.aem.live');
-  if (!trusted) return;
+  if (!trusted) { return; }
   const { default: loadQuickEdit } = await import(url.href);
   loadQuickEdit(payload, loadPage);
 }
@@ -46,9 +46,9 @@ export default function init(payload) {
   const { search } = window.location;
   const ref = new URLSearchParams(search).get('quick-edit');
   let origin;
-  if (ref === 'on' || !ref) origin = 'https://da.live';
-  if (ref === 'local') origin = 'http://localhost:6456';
-  if (!origin) origin = `https://${ref}--da-nx--adobe.aem.live`;
+  if (ref === 'on' || !ref) { origin = 'https://da.live'; }
+  if (ref === 'local') { origin = 'http://localhost:6456'; }
+  if (!origin) { origin = `https://${ref}--da-nx--adobe.aem.live`; }
   addImportmap();
   loadMoudle(origin, payload || generateSidekickPayload());
 }

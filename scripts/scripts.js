@@ -34,7 +34,7 @@ const components = ['fragment', 'schedule'];
 const decorateArea = ({ area = document }) => {
   const eagerLoad = (parent, selector) => {
     const img = parent.querySelector(selector);
-    if (!img) return;
+    if (!img) { return; }
     img.removeAttribute('loading');
     img.fetchPriority = 'high';
   };
@@ -51,7 +51,7 @@ await loadPage();
 (function da() {
   const { searchParams } = new URL(window.location.href);
   const hasPreview = searchParams.has('dapreview');
-  if (hasPreview) import('../tools/da/da.js').then((mod) => mod.default(loadPage));
+  if (hasPreview) { import('../tools/da/da.js').then((mod) => mod.default(loadPage)); }
   const hasQE = searchParams.has('quick-edit');
-  if (hasQE) import('../tools/quick-edit/quick-edit.js').then((mod) => mod.default());
+  if (hasQE) { import('../tools/quick-edit/quick-edit.js').then((mod) => mod.default()); }
 }());

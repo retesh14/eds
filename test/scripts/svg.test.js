@@ -12,7 +12,7 @@ async function renderedBox(use, timeout = 3000) {
   const deadline = performance.now() + timeout;
   while (performance.now() < deadline) {
     const box = use.getBBox();
-    if (box.width > 0 && box.height > 0) return box;
+    if (box.width > 0 && box.height > 0) { return box; }
     await new Promise((resolve) => { requestAnimationFrame(resolve); });
   }
   throw new Error(`${use.getAttribute('href')} painted nothing within ${timeout}ms`);

@@ -7,7 +7,7 @@ export function parse(svg) {
   let last = 0;
   for (const match of svg.matchAll(TAG)) {
     const text = svg.slice(last, match.index);
-    if (text && !VOID_TEXT.test(text)) tokens.push({ type: 'text', value: text.trim() });
+    if (text && !VOID_TEXT.test(text)) { tokens.push({ type: 'text', value: text.trim() }); }
     last = match.index + match[0].length;
     const raw = match[0];
     if (raw.startsWith('<!--')) {
@@ -20,12 +20,12 @@ export function parse(svg) {
       const selfClose = raw.endsWith('/>');
       const name = raw.slice(1).match(/^[\w:-]+/)[0];
       const attrs = new Map();
-      for (const [, key, dq, sq] of raw.matchAll(ATTR)) attrs.set(key, dq ?? sq);
+      for (const [, key, dq, sq] of raw.matchAll(ATTR)) { attrs.set(key, dq ?? sq); }
       tokens.push({ type: 'open', name, attrs, selfClose });
     }
   }
   const tail = svg.slice(last);
-  if (tail && !VOID_TEXT.test(tail)) tokens.push({ type: 'text', value: tail.trim() });
+  if (tail && !VOID_TEXT.test(tail)) { tokens.push({ type: 'text', value: tail.trim() }); }
   return tokens;
 }
 
@@ -44,11 +44,14 @@ export function serialise(tokens) {
     } else if (token.type === 'close') {
       depth -= 1;
       const inline = tokens[i - 1]?.type === 'text';
-      if (inline) lines[lines.length - 1] += `</${token.name}>`;
-      else lines.push(`${'  '.repeat(depth)}</${token.name}>`);
+      if (inline) {
+        lines[lines.length - 1] += `</${token.name}>`;
+      } else {
+        lines.push(`${'  '.repeat(depth)}</${token.name}>`);
+      }
     } else if (token.type !== 'pi' && token.type !== 'comment') {
       lines.push(pad + tag(token));
-      if (!token.selfClose) depth += 1;
+      if (!token.selfClose) { depth += 1; }
     }
   }
   return lines.join('\n');
@@ -59,12 +62,12 @@ const NS = 'http://www.w3.org/2000/svg';
 function decorateRoot(root, findings) {
   root.attrs.delete('xmlns:xlink');
   root.attrs.set('id', 'icon');
-  if (!root.attrs.has('xmlns')) root.attrs.set('xmlns', NS);
+  if (!root.attrs.has('xmlns')) { root.attrs.set('xmlns', NS); }
   const width = root.attrs.get('width');
   const height = root.attrs.get('height');
   root.attrs.delete('width');
   root.attrs.delete('height');
-  if (root.attrs.has('viewBox')) return true;
+  if (root.attrs.has('viewBox')) { return true; }
   if (!width || !height) {
     findings.push({
       level: 'error',
@@ -83,8 +86,11 @@ function drop(tokens, names) {
   let skipName = null;
   for (const token of tokens) {
     if (skip) {
-      if (token.type === 'open' && token.name === skipName && !token.selfClose) skip += 1;
-      else if (token.type === 'close' && token.name === skipName) skip -= 1;
+      if (token.type === 'open' && token.name === skipName && !token.selfClose) {
+        skip += 1;
+      } else if (token.type === 'close' && token.name === skipName) {
+        skip -= 1;
+      }
     } else if (token.type === 'open' && names.has(token.name)) {
       if (!token.selfClose) {
         skip = 1;
@@ -109,7 +115,7 @@ function resolveClasses(tokens) {
       for (const [, selectors, body] of text.replace(NOISE, '').matchAll(RULE)) {
         for (const one of selectors.split(',')) {
           const cls = one.trim().match(CLASS)?.[1];
-          if (cls) rules.set(cls, `${rules.get(cls) ?? ''};${body}`);
+          if (cls) { rules.set(cls, `${rules.get(cls) ?? ''};${body}`); }
         }
       }
     }
@@ -118,7 +124,7 @@ function resolveClasses(tokens) {
     for (const one of token.attrs.get('class').split(/\s+/)) {
       for (const decl of (rules.get(one) ?? '').split(';')) {
         const [prop, value] = decl.split(':').map((s) => s?.trim());
-        if (prop && value) token.attrs.set(prop, value);
+        if (prop && value) { token.attrs.set(prop, value); }
       }
     }
     token.attrs.delete('class');
@@ -146,18 +152,18 @@ function strip(tokens, findings, root) {
   const elements = kept.filter((t) => t.type === 'open');
   const values = kept.flatMap((t) => (t.type === 'open' ? [...t.attrs.values()] : [t.value ?? '']));
   for (const value of values) {
-    for (const [, url, hash] of value.matchAll(REF)) referenced.add(url ?? hash);
+    for (const [, url, hash] of value.matchAll(REF)) { referenced.add(url ?? hash); }
   }
   for (const token of elements) {
     for (const key of [...token.attrs.keys()]) {
-      if (key.startsWith('on') || CRUFT.includes(key)) token.attrs.delete(key);
+      if (key.startsWith('on') || CRUFT.includes(key)) { token.attrs.delete(key); }
       if (key === 'xlink:href') {
         token.attrs.set('href', token.attrs.get(key));
         token.attrs.delete(key);
       }
     }
     const id = token.attrs.get('id');
-    if (token !== root && id && id !== 'icon' && !referenced.has(id)) token.attrs.delete('id');
+    if (token !== root && id && id !== 'icon' && !referenced.has(id)) { token.attrs.delete('id'); }
   }
   return kept;
 }
@@ -167,10 +173,10 @@ const KEYWORD = new Set(['none', 'currentColor', 'inherit', 'transparent']);
 
 function readStyle(token) {
   const style = token.attrs.get('style');
-  if (!style) return;
+  if (!style) { return; }
   for (const decl of style.split(';')) {
     const [prop, value] = decl.split(':').map((s) => s?.trim());
-    if (PAINT.includes(prop) && value) token.attrs.set(prop, value);
+    if (PAINT.includes(prop) && value) { token.attrs.set(prop, value); }
   }
   token.attrs.delete('style');
 }
@@ -233,7 +239,7 @@ function paint(tokens, findings, { flatten, keep, palette }) {
       const value = token.attrs.get(prop);
       const convertible = value && !KEYWORD.has(value) && !value.startsWith('url(')
         && !(keep && value.toLowerCase() === keep.toLowerCase());
-      if (convertible) token.attrs.set(prop, 'currentColor');
+      if (convertible) { token.attrs.set(prop, 'currentColor'); }
     }
   }
 }
@@ -274,7 +280,7 @@ function inspect(tokens, findings, { name }) {
 
 function inspectViewBox(root, findings) {
   const box = root.attrs.get('viewBox');
-  if (box === '0 0 24 24') return;
+  if (box === '0 0 24 24') { return; }
   const [x, y, w, h] = box.split(/[\s,]+/).map(Number);
   if (x !== 0 || y !== 0 || w !== h) {
     findings.push({
@@ -303,6 +309,6 @@ export default function normalise(svg, { name, flatten, keep, palette }) {
     tokens = resolveClasses(tokens);
     paint(tokens, findings, { flatten, keep, palette });
   }
-  if (findings.some((f) => f.level === 'error')) return { svg, findings };
+  if (findings.some((f) => f.level === 'error')) { return { svg, findings }; }
   return { svg: serialise(tokens), findings };
 }
