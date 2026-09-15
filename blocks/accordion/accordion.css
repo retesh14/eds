@@ -1,0 +1,64 @@
+.accordion .accordion-item {
+  border: 1px solid var(--color-gray-300, #dadada);
+  border-radius: 4px;
+}
+
+.accordion .accordion-item + .accordion-item {
+  margin-top: 16px;
+}
+
+.accordion .accordion-item-label {
+  position: relative;
+  padding: 16px 46px 16px 16px;
+  cursor: pointer;
+  list-style: none;            /* hide default marker */
+  font-weight: 600;
+  font-size: 18px;             /* Updates for C5 - Step 7 */
+  transition: background-color 0.2s ease;
+}
+
+/* hide the default disclosure triangle (Safari/Chrome) */
+.accordion .accordion-item-label::-webkit-details-marker {
+  display: none;
+}
+
+.accordion .accordion-item-label:hover,
+.accordion .accordion-item[open] .accordion-item-label {
+  background-color: light-dark(var(--color-gray-100), var(--color-gray-900));
+}
+
+/* chevron */
+.accordion .accordion-item-label::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 18px;
+  width: 6px;
+  height: 6px;
+  border: solid currentcolor;
+  border-width: 2px 2px 0 0;
+  transform: translateY(-50%) rotate(135deg);   /* points down when closed */
+  transition: transform 0.2s ease;
+}
+
+.accordion .accordion-item[open] .accordion-item-label::after {
+  transform: translateY(-25%) rotate(-45deg);    /* points up when open */
+}
+
+.accordion .accordion-item-body {
+  padding: 0 16px 16px;
+  color: light-dark(var(--color-gray-700, #444), var(--color-gray-300));
+  
+}
+
+.accordion .accordion-item[open] .accordion-item-body {
+  border-top: 1px solid var(--color-gray-300, #dadada);
+}
+
+/* Updates for C5 - Step 7 */
+
+/* comfortable reading width even if the section isn't a container */
+.accordion {
+  max-width: var(--grid-container-width);
+  margin-inline: auto;
+}

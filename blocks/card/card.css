@@ -2,10 +2,15 @@
   --spacing-default: var(--spacing-l);
 
   overflow-wrap: break-word;
+  
+  /* box-shadow: 0 1px 6px 0 rgb(0 0 0 / 12%); */
   box-shadow: 0 1px 6px 0 rgb(0 0 0 / 12%);
   overflow: hidden;
-  background-color: light-dark(var(--color-gray-100), var(--color-gray-900));
-  color: light-dark(var(--color-dark), var(--color-light));
+  background-color: yellow;
+  color: red;
+  
+  /* background-color: light-dark(var(--color-gray-100), var(--color-gray-900));
+  color: light-dark(var(--color-dark), var(--color-light)); */
   transition: all 0.25s ease-in-out;
 
   .card-inner {
@@ -60,12 +65,28 @@
 
   &:not(.quiet):hover {
     transform: scale(1.005);
-    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 16%);
-
+    
+    /* box-shadow: 0 2px 8px 0 rgb(0 0 0 / 16%); */
+    box-shadow: 0 10px 30px 0 rgb(255 0 0 / 50%);
+    
     picture {
       opacity: 1;
     }
   }
+  
+  /* C4 Updates */
+.cta-arrow {
+  margin-left: 4px;
+  transition: margin-left 0.15s ease;
+}
+
+a:hover .cta-arrow {
+  margin-left: 8px;
+}
+
+.card-cta {
+  white-space: nowrap;
+}
 
   /* Variations */
   &.center {

@@ -79,7 +79,9 @@
 
   &.grid .block-content {
     display: grid;
-    gap: var(--gap-spacing);
+    
+    /* gap: var(--gap-spacing); */
+    gap: 80px;
   }
 
   &.center {

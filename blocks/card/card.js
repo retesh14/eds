@@ -27,5 +27,16 @@ export default function init(el) {
     cta.href = `${cta.getAttribute('href')}${window.location.hash}`;
   }
   ctaPara.classList.add('card-cta-container');
+  // C3 updates
+  cta.classList.add('card-cta');// your class hook for styling
+  cta.target = '_blank';// open in a new tab
+  cta.rel = 'noopener noreferrer';// security best practice for _blank
+  // C4 updates
+  const arrow = document.createElement('span');
+  arrow.className = 'cta-arrow';
+  arrow.textContent = ' ›';
+  cta.append(arrow);
+  ctaPara.classList.add('card-cta-container');
+  // Updates end
   inner.append(ctaPara);
 }
