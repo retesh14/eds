@@ -12,7 +12,7 @@ function decorateCols(el, cols) {
   const hasCover = el.classList.contains('image-cover');
   for (const [idx, col] of cols.entries()) {
     col.classList.add('col', `col-${idx + 1}`);
-    if (hasCover) decorateCover(col);
+    if (hasCover) { decorateCover(col); }
   }
 }
 

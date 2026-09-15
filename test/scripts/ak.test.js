@@ -5,7 +5,7 @@ const LOCALES = { '': { lang: 'en' }, '/de': { lang: 'de' }, '/ar': { lang: 'ar'
 
 function setLocaleMeta(value) {
   document.head.querySelector('meta[name="locale"]')?.remove();
-  if (!value) return;
+  if (!value) { return; }
   const meta = document.createElement('meta');
   meta.name = 'locale';
   meta.content = value;
