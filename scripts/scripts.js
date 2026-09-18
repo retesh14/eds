@@ -11,6 +11,8 @@ if (window.trustedTypes?.createPolicy) {
 
 const hostnames = ['authorkit.dev'];
 
+const eventActionUrl = 'https://18501-eds-stage.adobeio-static.net/api/v1/web/event-appbuilder/get-event';
+
 const locales = {
   '': { lang: 'en' },
   '/de': { lang: 'de' },
@@ -43,9 +45,17 @@ const decorateArea = ({ area = document }) => {
 };
 
 export async function loadPage() {
-  setConfig({ hostnames, locales, linkBlocks, components, decorateArea });
+  setConfig({
+    hostnames,
+    locales,
+    linkBlocks,
+    components,
+    decorateArea,
+    eventActionUrl,
+  });
   await loadArea();
 }
+
 await loadPage();
 
 (function da() {
